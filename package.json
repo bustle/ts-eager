@@ -1,6 +1,6 @@
 {
   "name": "ts-eager",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Fast TypeScript runner using esbuild for eager compilation",
   "main": "index.js",
   "repository": "github.com/mhart/ts-eager",
