@@ -2,7 +2,7 @@
 
 Fast TypeScript runner and register hook with eager compilation.
 
-Similar to [`ts-node`](https://github.com/TypeStrong/ts-node), except it uses [`esbuild`](https://github.com/evanw/esbuild) – an extremely fast TypeScript transpiler – to eagerly compile all included files from your `tsconfig.json` on startup. This makes a noticeable difference for large TS projects.
+Similar to [`ts-node`](https://github.com/TypeStrong/ts-node), except it uses [`esbuild`](https://github.com/evanw/esbuild) – an extremely fast TypeScript transpiler – to eagerly compile all included files from your `tsconfig.json` on startup. This makes a noticeable difference for tasks where you're likely to load a good portion of your TS files, eg running tests.
 
 It falls back to lazy compilation if a file is require'd that's not in `tsconfig.json`, and will also fallback to `ts-node` (if it's installed) for any type-specific compilation that `esbuild` doesn't support (such as `emitDecoratorMetadata`).
 
