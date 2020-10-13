@@ -24,10 +24,22 @@ npm install -D tsconfig-paths
 ## Usage
 
 ```console
+ts-eager myfile.ts
+```
+
+Or as a require hook:
+
+```console
 node -r ts-eager/register myfile.ts
 ```
 
 If you need `paths` support, and have `tsconfig-paths` installed:
+
+```console
+ts-eager-paths myfile.ts
+```
+
+Or:
 
 ```console
 node -r ts-eager/register-paths myfile.ts
@@ -39,7 +51,11 @@ Or:
 node -r ts-eager/register -r tsconfig-paths/register myfile.ts
 ```
 
-## Configuring with env variables
+## Configuration
+
+`ts-eager` doesn't have any specific command-line options – it invokes `node` and passes all command-line arguments through.
+
+It supports these environment variables:
 
 - `TS_EAGER_LOGLEVEL`: 'error' (default), 'warning', 'info', 'silent'
 - `TS_NODE_PROJECT`: tsconfig file (default tsconfig.json)

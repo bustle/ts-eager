@@ -9,7 +9,12 @@
   "engines": {
     "node": ">=12.18.4"
   },
+  "bin": {
+    "ts-eager": "bin/ts-eager.sh",
+    "ts-eager-paths": "bin/ts-eager-paths.sh"
+  },
   "files": [
+    "bin",
     "*.js"
   ],
   "devDependencies": {
