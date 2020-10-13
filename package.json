@@ -1,0 +1,50 @@
+{
+  "name": "ts-eager",
+  "version": "1.0.0",
+  "description": "Fast TypeScript runner using esbuild for eager compilation",
+  "main": "index.js",
+  "repository": "github.com/mhart/ts-eager",
+  "author": "Michael Hart <michael.hart.au@gmail.com> (https://github.com/mhart)",
+  "license": "MIT",
+  "engines": {
+    "node": ">=12.18.4"
+  },
+  "files": [
+    "*.js"
+  ],
+  "devDependencies": {
+    "@types/node": "^14.11.8",
+    "eslint": "^7.11.0",
+    "eslint-config-prettier": "^6.12.0",
+    "prettier": "^2.1.2",
+    "typescript": "^4.0.3"
+  },
+  "scripts": {
+    "test": "node -r ./register test.ts",
+    "tsc": "tsc",
+    "lint": "eslint ."
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true,
+    "printWidth": 120
+  },
+  "eslintConfig": {
+    "extends": [
+      "eslint:recommended",
+      "prettier"
+    ],
+    "env": {
+      "node": true,
+      "es2017": true
+    },
+    "parserOptions": {
+      "ecmaVersion": 2019,
+      "sourceType": "module"
+    }
+  },
+  "dependencies": {
+    "esbuild": "^0.7.15",
+    "source-map-support": "^0.5.19"
+  }
+}
