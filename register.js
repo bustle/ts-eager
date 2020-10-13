@@ -26,9 +26,19 @@ try {
   files = fullTsconfig.files
   allowJs = !!fullTsconfig.compilerOptions.allowJs
   emitDecoratorMetadata = !!fullTsconfig.compilerOptions.emitDecoratorMetadata
+  if (Object.keys(fullTsconfig.compilerOptions.paths || {}).length) {
+    try {
+      require('tsconfig-paths/register')
+    } catch (e) {
+      if (['warning', 'info'].includes(logLevel)) {
+        console.error('tsconfig has paths, but tsconfig-paths is not installed')
+        console.error('Proceeding without paths support...')
+      }
+    }
+  }
 } catch (e) {
   if (['warning', 'info'].includes(logLevel)) {
-    console.error(`Could not parse ${tsconfig || 'tsconfig.json'}`)
+    console.error(`Could not parse ${tsconfig || 'tsconfig.json'} (is typescript installed?)`)
     console.error(e)
     console.error('Proceeding without eager compilation...')
   }

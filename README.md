@@ -4,7 +4,7 @@ Fast TypeScript runner and register hook with eager compilation.
 
 Similar to [`ts-node`](https://github.com/TypeStrong/ts-node), except it uses [`esbuild`](https://github.com/evanw/esbuild) – an extremely fast TypeScript transpiler – to eagerly compile all included files from your `tsconfig.json` on startup. This makes a noticeable difference for tasks where you're likely to load a good portion of your TS files, eg running tests.
 
-It falls back to lazy compilation if a file is require'd that's not in `tsconfig.json`, and will also fallback to `ts-node` (if it's installed) for any type-specific compilation that `esbuild` doesn't support (such as `emitDecoratorMetadata`).
+It falls back to lazy compilation if a file is require'd that's not in `tsconfig.json`, and will also fallback to `ts-node` (if it's installed) for any type-specific compilation that `esbuild` doesn't support (such as `emitDecoratorMetadata`). It will also optionally require `tsconfig-paths` for `paths` support if your `tsconfig` needs it.
 
 ## Installation
 
@@ -31,24 +31,6 @@ Or as a require hook:
 
 ```console
 node -r ts-eager/register myfile.ts
-```
-
-If you need `paths` support, and have `tsconfig-paths` installed:
-
-```console
-ts-eager-paths myfile.ts
-```
-
-Or:
-
-```console
-node -r ts-eager/register-paths myfile.ts
-```
-
-Or:
-
-```console
-node -r ts-eager/register -r tsconfig-paths/register myfile.ts
 ```
 
 ## Configuration
@@ -88,7 +70,7 @@ And it would only eagerly compile files in `test`, and exclude any matching `*.t
 ```json
 {
   "recursive": true,
-  "require": ["ts-eager/register-paths"],
+  "require": ["ts-eager/register"],
   "timeout": 5000
 }
 ```
