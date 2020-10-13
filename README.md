@@ -60,3 +60,35 @@ It supports these environment variables:
 - `TS_EAGER_LOGLEVEL`: 'error' (default), 'warning', 'info', 'silent'
 - `TS_NODE_PROJECT`: tsconfig file (default tsconfig.json)
 - `TS_NODE_IGNORE`: comma separated regexes to skip compilation completely
+
+## Examples
+
+If you want to customize which files `ts-eager` compiles up-front, you can specify a different `tsconfig.json` using `TS_NODE_PROJECT`, and then use the standard TypeScript `include`/`exclude` options in your config.
+
+For example, if this was in `tsconfig.test.json`:
+
+```json
+{
+  "extends": "./tsconfig.json",
+  "include": ["test"],
+  "exclude": ["**/*.template.ts"]
+}
+```
+
+Then you could run `mocha` like this:
+
+```console
+TS_NODE_PROJECT=tsconfig.test.json mocha -r ts-eager/register
+```
+
+And it would only eagerly compile files in `test`, and exclude any matching `*.template.ts`.
+
+`mocha` also supports adding require hooks in `.mocharc.json`:
+
+```json
+{
+  "recursive": true,
+  "require": ["ts-eager/register-paths"],
+  "timeout": 5000
+}
+```
