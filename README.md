@@ -9,34 +9,34 @@ It falls back to lazy compilation if a file is require'd that's not in `tsconfig
 ## Installation
 
 ```console
-$ npm install -D ts-eager
+npm install -D ts-eager
 
 # Optional, but recommended: for determining files from tsconfig.json
-$ npm install -D typescript
+npm install -D typescript
 
 # Optional, if you need emitDecoratorMetadata support
-$ npm install -D ts-node
+npm install -D ts-node
 
 # Optional, if you need paths support
-$ npm install -D tsconfig-paths
+npm install -D tsconfig-paths
 ```
 
 ## Usage
 
 ```console
-$ node -r ts-eager/register myfile.ts
+node -r ts-eager/register myfile.ts
 ```
 
 If you need `paths` support, and have `tsconfig-paths` installed:
 
 ```console
-$ node -r ts-eager/register-paths myfile.ts
+node -r ts-eager/register-paths myfile.ts
 ```
 
 Or:
 
 ```console
-$ node -r ts-eager/register -r tsconfig-paths/register myfile.ts
+node -r ts-eager/register -r tsconfig-paths/register myfile.ts
 ```
 
 ## Configuring with env variables
