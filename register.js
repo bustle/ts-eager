@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-const { existsSync } = require('fs')
 const { tmpdir } = require('os')
 const { resolve, extname, dirname } = require('path')
 const { buildSync } = require('esbuild')
@@ -18,17 +17,20 @@ let files = []
 let allowJs = false
 let emitDecoratorMetadata = false
 try {
-  const { convertToTSConfig, sys, getParsedCommandLineOfConfigFile, findConfigFile } = require('typescript')
-  tsconfig = findConfigFile(process.cwd(), existsSync, tsconfigName)
+  const { sys, findConfigFile, readConfigFile, parseJsonConfigFileContent } = require('typescript')
+
+  tsconfig = findConfigFile('.', sys.fileExists, tsconfigName)
+  const parsedConfig = parseJsonConfigFileContent(readConfigFile(tsconfig, sys.readFile).config, sys, '.')
+
   basePath = dirname(tsconfig)
-  const configParseResult = getParsedCommandLineOfConfigFile(tsconfig, null, sys)
-  const fullTsconfig = convertToTSConfig(configParseResult, tsconfig, sys)
-  files = fullTsconfig.files
-  allowJs = !!fullTsconfig.compilerOptions.allowJs
-  emitDecoratorMetadata = !!fullTsconfig.compilerOptions.emitDecoratorMetadata
-  if (Object.keys(fullTsconfig.compilerOptions.paths || {}).length) {
+  files = parsedConfig.fileNames
+  allowJs = !!parsedConfig.options.allowJs
+  emitDecoratorMetadata = !!parsedConfig.options.emitDecoratorMetadata
+
+  const { baseUrl, paths } = parsedConfig.options
+  if (Object.keys(paths || {}).length) {
     try {
-      require('tsconfig-paths/register')
+      require('tsconfig-paths').register({ baseUrl, paths })
     } catch (e) {
       if (['warning', 'info'].includes(logLevel)) {
         console.error('tsconfig has paths, but tsconfig-paths is not installed')
@@ -38,7 +40,7 @@ try {
   }
 } catch (e) {
   if (['warning', 'info'].includes(logLevel)) {
-    console.error(`Could not parse ${tsconfig || 'tsconfig.json'} (is typescript installed?)`)
+    console.error(`Could not parse ${tsconfigName || 'tsconfig.json'} (is typescript installed?)`)
     console.error(e)
     console.error('Proceeding without eager compilation...')
   }
