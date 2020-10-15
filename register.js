@@ -16,16 +16,19 @@ let basePath = process.cwd()
 let files = []
 let allowJs = false
 let emitDecoratorMetadata = false
+let compilerOptions
 try {
   const { sys, findConfigFile, readConfigFile, parseJsonConfigFileContent } = require('typescript')
 
-  tsconfig = findConfigFile('.', sys.fileExists, tsconfigName)
+  tsconfig = findConfigFile('.', sys.fileExists, tsconfigName) || 'tsconfig.json'
   const parsedConfig = parseJsonConfigFileContent(readConfigFile(tsconfig, sys.readFile).config, sys, '.')
 
   basePath = dirname(tsconfig)
   files = parsedConfig.fileNames
   allowJs = !!parsedConfig.options.allowJs
   emitDecoratorMetadata = !!parsedConfig.options.emitDecoratorMetadata
+
+  compilerOptions = parsedConfig.raw.compilerOptions
 
   const { baseUrl, paths } = parsedConfig.options
   if (Object.keys(paths || {}).length) {
@@ -73,7 +76,7 @@ for (const warning of warnings) {
   console.error(warning.text)
 }
 
-const fileContents = outputFiles.reduce((map, { contents }, ix) => map.set(files[ix], contents), new Map())
+const fileContents = (outputFiles || []).reduce((map, { contents }, ix) => map.set(files[ix], contents), new Map())
 
 const decoder = new TextDecoder('utf-8')
 
@@ -102,13 +105,17 @@ const compile = (code, filename) => {
       console.error(warning.location)
       console.error(warning.text)
     }
-    fileContents.set(filename, outputFiles[0].contents)
+    const { contents } = (outputFiles || [])[0] || {}
+    if (contents != null) {
+      fileContents.set(filename, contents)
+    }
   }
   if (emitDecoratorMetadata) {
     const js = retrieveFile(filename)
     if (js.includes('var __decorate = ') && !js.includes('var __metadata = ')) {
       if (tsNodeService == null) {
-        tsNodeService = require('ts-node').create({ transpileOnly: true })
+        const { create } = require('ts-node')
+        tsNodeService = create({ transpileOnly: true, compilerOptions, skipProject: !!compilerOptions })
       }
       fileContents.set(filename, tsNodeService.compile(code, filename))
     }
@@ -116,7 +123,7 @@ const compile = (code, filename) => {
   return retrieveFile(filename)
 }
 
-let requireExtensions = {}
+let requireExtensions
 try {
   requireExtensions = require.extensions
 } catch (e) {
