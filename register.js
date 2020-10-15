@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+const { readFileSync } = require('fs')
 const { tmpdir } = require('os')
 const { resolve, extname, dirname } = require('path')
 const { buildSync } = require('esbuild')
@@ -140,14 +141,12 @@ const origJsHandler = requireExtensions['.js']
 
 const registerExtension = (ext, compile) => {
   const origHandler = requireExtensions[ext] || origJsHandler
-  requireExtensions[ext] = function (mod, filename) {
-    if (!shouldIgnore(filename)) {
-      const _compile = mod._compile
-      mod._compile = function (code, filename) {
-        return _compile.call(this, compile(code, filename), filename)
-      }
+  requireExtensions[ext] = function (module, filename) {
+    if (shouldIgnore(filename)) {
+      return origHandler(module, filename)
     }
-    return origHandler(mod, filename)
+    const code = readFileSync(filename, 'utf8')
+    return module._compile(compile(code, filename), filename)
   }
 }
 
