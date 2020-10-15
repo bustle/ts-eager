@@ -22,10 +22,13 @@
     "eslint": "^7.11.0",
     "eslint-config-prettier": "^6.12.0",
     "prettier": "^2.1.2",
+    "reflect-metadata": "^0.1.13",
+    "ts-node": "^9.0.0",
+    "tsconfig-paths": "^3.9.0",
     "typescript": "^4.0.3"
   },
   "scripts": {
-    "test": "node -r ./register test.ts",
+    "test": "node test/test.js",
     "tsc": "tsc",
     "lint": "eslint ."
   },
