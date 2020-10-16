@@ -150,6 +150,6 @@ const registerExtension = (ext, compile) => {
   }
 }
 
-sourceMapSupport.install({ retrieveFile })
+sourceMapSupport.install({ retrieveFile, environment: 'node', handleUncaughtExceptions: false })
 
 extensions.forEach((ext) => registerExtension(ext, compile))
