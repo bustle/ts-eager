@@ -29,11 +29,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - name: Install packages
-        run: yarn install
+        run: npm ci
       - name: Test
-        run: yarn run test
+        run: npm run test
       - name: Build
-        run: yarn run tsc --noEmit
+        run: npm run tsc --noEmit
   lint:
     runs-on: ubuntu-latest
     steps:
@@ -49,6 +49,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - name: Install packages
-        run: yarn install
+        run: npm ci
       - name: Lint
-        run: yarn run lint
+        run: npm run lint
