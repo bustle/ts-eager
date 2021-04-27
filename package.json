@@ -52,7 +52,7 @@
     }
   },
   "dependencies": {
-    "esbuild": "^0.7.15",
+    "esbuild": "^0.10.2",
     "source-map-support": "^0.5.19"
   }
 }
