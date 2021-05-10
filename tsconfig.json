@@ -11,5 +11,6 @@
     "noUnusedLocals": true,
     "resolveJsonModule": true,
     "esModuleInterop": true
-  }
+  },
+  "exclude": ["test"]
 }

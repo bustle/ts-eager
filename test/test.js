@@ -5,6 +5,7 @@ const testDirs = readdirSync(__dirname).filter((name) => !name.includes('.'))
 
 for (const testDir of testDirs) {
   console.log(`Testing ${testDir}...`)
+  execSync(`${__dirname}/../node_modules/.bin/tsc`, { cwd: `${__dirname}/${testDir}`, stdio: 'inherit' })
   execSync(`node -r ${__dirname}/../register.js test.ts`, { cwd: `${__dirname}/${testDir}`, stdio: 'inherit' })
 }
 
