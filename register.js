@@ -68,6 +68,13 @@ const defaultEsbuildOptions = {
   outdir: tmpdir(), // ignored if write is false
 }
 
+// The default esbuild buffer size seems to be too small for medium-sized projects
+// and node will throw ENOBUFS errors, so we increase it here to 256MB if not already set
+// https://github.com/evanw/esbuild/blob/6be0962826a97dd49f6e1f4f93277442783d5257/lib/npm/node.ts#L347
+if (process.env.ESBUILD_MAX_BUFFER == null) {
+  process.env.ESBUILD_MAX_BUFFER = 256 * 1024 * 1024
+}
+
 const { warnings, outputFiles } = buildSync({
   ...defaultEsbuildOptions,
   entryPoints: files,
