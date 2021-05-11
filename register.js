@@ -120,10 +120,7 @@ const compile = (code, filename) => {
   }
   if (emitDecoratorMetadata) {
     const js = retrieveFile(filename)
-    if (
-      (js.includes('var __decorate = ') || js.includes('var __decorateClass = ')) &&
-      !js.includes('var __metadata = ')
-    ) {
+    if (/^var __decorate(Class|Param)? = /m.test(js) && !/^var __metadata = /m.test(js)) {
       if (tsNodeService == null) {
         const { create } = require('ts-node')
         tsNodeService = create({ transpileOnly: true, compilerOptions, skipProject: !!compilerOptions })
