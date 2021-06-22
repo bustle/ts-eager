@@ -61,6 +61,7 @@ const extensions = (allowJs ? ['.js', '.jsx'] : []).concat(['.ts', '.tsx'])
 const defaultEsbuildOptions = {
   tsconfig: tsconfig || undefined,
   target: 'node' + process.versions.node.split('.')[0],
+  platform: 'node',
   format: 'cjs',
   sourcemap: 'inline',
   write: false,
