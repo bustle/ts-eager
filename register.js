@@ -12,6 +12,11 @@ const ignoreRegexes = process.env.TS_NODE_IGNORE || '(?:^|/)node_modules/'
 
 const ignores = ignoreRegexes.split(/ *, */g).map((str) => new RegExp(str))
 
+const loaderReplacements = {
+  cjs: 'js',
+  mjs: 'js',
+}
+
 let tsconfig = ''
 let basePath = process.cwd()
 let files = []
@@ -101,10 +106,13 @@ let tsNodeService
 
 const compile = (code, filename) => {
   if (!fileContents.has(filename)) {
+    let loader = extname(filename).slice(1)
+    loader = loaderReplacements[loader] || loader
+
     const { warnings, outputFiles } = buildSync({
       ...defaultEsbuildOptions,
       stdin: {
-        loader: extname(filename).slice(1),
+        loader,
         sourcefile: filename,
         contents: code,
       },
